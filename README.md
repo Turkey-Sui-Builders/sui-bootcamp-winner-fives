@@ -20,7 +20,6 @@
 
 Kariyer3 is a fully decentralized job board built on Sui blockchain that implements cutting-edge Web3 technologies:
 
-- **🔐 Privacy-First Architecture**: Implements SEAL Pattern using Dynamic Object Fields for private job applications
 - **💾 Decentralized Storage**: CV files stored on Walrus, ensuring data permanence and censorship resistance
 - **🎫 Web2 UX with Web3 Backend**: Google OAuth via zkLogin (Enoki) for seamless onboarding
 - **🤖 AI-Ready Infrastructure**: Pre-integrated data fields for future AI-powered candidate scoring
