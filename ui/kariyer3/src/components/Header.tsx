@@ -3,39 +3,27 @@ import { ConnectButton } from "./ConnectButton";
 
 export function Header() {
   return (
-    <header className="border-b border-gray-200 dark:border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 py-4">
+    <header className="bg-white">
+      <div className="max-w-7xl mx-auto px-6 py-6">
         <div className="flex justify-between items-center">
-          {/* Logo & Nav - Font-Driven */}
-          <div className="flex items-center gap-8">
-            <Link to="/" className="text-3xl font-bold hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+          {/* Logo & Nav - Font-Driven, Borderless */}
+          <div className="flex items-center gap-12">
+            <Link to="/" className="text-4xl font-black tracking-tight interactive">
               Kariyer3
             </Link>
 
-            <nav className="flex gap-6 text-sm">
-              <Link
-                to="/"
-                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-              >
-                Browse Jobs
+            <nav className="flex gap-8">
+              <Link to="/" className="text-base font-medium text-gray-600 interactive">
+                Jobs
               </Link>
-              <Link
-                to="/post"
-                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-              >
-                Post Job
+              <Link to="/post" className="text-base font-medium text-gray-600 interactive">
+                Post
               </Link>
-              <Link
-                to="/my-jobs"
-                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-              >
+              <Link to="/my-jobs" className="text-base font-medium text-gray-600 interactive">
                 My Jobs
               </Link>
-              <Link
-                to="/my-applications"
-                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-              >
-                My Applications
+              <Link to="/my-applications" className="text-base font-medium text-gray-600 interactive">
+                Applications
               </Link>
             </nav>
           </div>
