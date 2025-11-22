@@ -35,8 +35,8 @@ describe("PostJobPage", () => {
     expect(screen.getByLabelText("Company Name")).toBeInTheDocument();
     expect(screen.getByLabelText("Location")).toBeInTheDocument();
     expect(screen.getByLabelText("Category")).toBeInTheDocument();
-    expect(screen.getByLabelText("Min Salary (SUI)")).toBeInTheDocument();
-    expect(screen.getByLabelText("Max Salary (SUI)")).toBeInTheDocument();
+    expect(screen.getByLabelText("Min Salary ($)")).toBeInTheDocument();
+    expect(screen.getByLabelText("Max Salary ($)")).toBeInTheDocument();
     expect(screen.getByLabelText("Tags (comma-separated)")).toBeInTheDocument();
     expect(screen.getByLabelText("Job Description")).toBeInTheDocument();
   });
@@ -70,8 +70,8 @@ describe("PostJobPage", () => {
   it("should update salary fields on change", () => {
     renderPostJobPage();
 
-    const minSalaryInput = screen.getByLabelText("Min Salary (SUI)");
-    const maxSalaryInput = screen.getByLabelText("Max Salary (SUI)");
+    const minSalaryInput = screen.getByLabelText("Min Salary ($)");
+    const maxSalaryInput = screen.getByLabelText("Max Salary ($)");
 
     fireEvent.change(minSalaryInput, { target: { value: "100000" } });
     fireEvent.change(maxSalaryInput, { target: { value: "150000" } });
@@ -114,8 +114,8 @@ describe("PostJobPage", () => {
     const titleInput = screen.getByLabelText("Job Title");
     const companyInput = screen.getByLabelText("Company Name");
     const locationInput = screen.getByLabelText("Location");
-    const minSalaryInput = screen.getByLabelText("Min Salary (SUI)");
-    const maxSalaryInput = screen.getByLabelText("Max Salary (SUI)");
+    const minSalaryInput = screen.getByLabelText("Min Salary ($)");
+    const maxSalaryInput = screen.getByLabelText("Max Salary ($)");
     const descriptionInput = screen.getByLabelText("Job Description");
 
     fireEvent.change(titleInput, { target: { value: "Test Job" } });
@@ -140,8 +140,8 @@ describe("PostJobPage", () => {
     expect(screen.getByLabelText("Job Title")).toBeRequired();
     expect(screen.getByLabelText("Company Name")).toBeRequired();
     expect(screen.getByLabelText("Location")).toBeRequired();
-    expect(screen.getByLabelText("Min Salary (SUI)")).toBeRequired();
-    expect(screen.getByLabelText("Max Salary (SUI)")).toBeRequired();
+    expect(screen.getByLabelText("Min Salary ($)")).toBeRequired();
+    expect(screen.getByLabelText("Max Salary ($)")).toBeRequired();
     expect(screen.getByLabelText("Job Description")).toBeRequired();
   });
 
@@ -157,8 +157,8 @@ describe("PostJobPage", () => {
     expect(screen.getByLabelText("Job Title")).toHaveAttribute("type", "text");
     expect(screen.getByLabelText("Company Name")).toHaveAttribute("type", "text");
     expect(screen.getByLabelText("Location")).toHaveAttribute("type", "text");
-    expect(screen.getByLabelText("Min Salary (SUI)")).toHaveAttribute("type", "number");
-    expect(screen.getByLabelText("Max Salary (SUI)")).toHaveAttribute("type", "number");
+    expect(screen.getByLabelText("Min Salary ($)")).toHaveAttribute("type", "number");
+    expect(screen.getByLabelText("Max Salary ($)")).toHaveAttribute("type", "number");
   });
 
   it("should show placeholder for tags", () => {

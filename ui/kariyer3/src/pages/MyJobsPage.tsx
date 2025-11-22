@@ -161,9 +161,7 @@ export function MyJobsPage() {
     );
   };
 
-  const getCVUrl = (blobId: string) => {
-    return `${WALRUS_AGGREGATOR}/v1/${blobId}`;
-  };
+  const getCVUrl = (blobId: string) => `${WALRUS_AGGREGATOR}/v1/blobs/${blobId}`;
 
   const getStatusText = (status: number) => {
     switch (status) {
@@ -245,7 +243,7 @@ export function MyJobsPage() {
                       <span className="chip">{job.location}</span>
                       <span className="chip">{job.category}</span>
                       <span className="chip font-semibold text-main">
-                        {minSalary.toLocaleString()} - {maxSalary.toLocaleString()} SUI
+                        {minSalary.toLocaleString()} - {maxSalary.toLocaleString()} $
                       </span>
                     </div>
                     {job.tags.length > 0 && (
@@ -307,14 +305,13 @@ export function MyJobsPage() {
                               )}
 
                               <div className="flex gap-4">
-                                <a
-                                  href={getCVUrl(app.cv_blob_id)}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-sm text-teal-600 dark:text-teal-200 hover:text-main transition-smooth"
+                                <button
+                                  type="button"
+                                  onClick={() => window.open(getCVUrl(app.cv_blob_id), "_blank", "noopener,noreferrer")}
+                                  className="text-sm text-teal-600 dark:text-teal-200 hover:text-main transition-smooth underline"
                                 >
                                   View CV (Walrus)
-                                </a>
+                                </button>
                               </div>
                             </div>
 

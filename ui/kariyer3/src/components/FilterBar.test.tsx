@@ -25,8 +25,8 @@ describe("FilterBar", () => {
 
   it("should render salary range inputs", () => {
     renderFilterBar();
-    expect(screen.getByPlaceholderText("Min Salary (SUI)")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Max Salary (SUI)")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Min Salary ($)")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Max Salary ($)")).toBeInTheDocument();
   });
 
   it("should render status filter", () => {
@@ -51,7 +51,7 @@ describe("FilterBar", () => {
 
   it("should update min salary on input change", () => {
     renderFilterBar();
-    const minSalaryInput = screen.getByPlaceholderText("Min Salary (SUI)");
+    const minSalaryInput = screen.getByPlaceholderText("Min Salary ($)");
 
     fireEvent.change(minSalaryInput, { target: { value: "50000" } });
 
@@ -60,7 +60,7 @@ describe("FilterBar", () => {
 
   it("should update max salary on input change", () => {
     renderFilterBar();
-    const maxSalaryInput = screen.getByPlaceholderText("Max Salary (SUI)");
+    const maxSalaryInput = screen.getByPlaceholderText("Max Salary ($)");
 
     fireEvent.change(maxSalaryInput, { target: { value: "100000" } });
 
@@ -99,8 +99,8 @@ describe("FilterBar", () => {
     renderFilterBar(preloadedState);
 
     const searchInput = screen.getByPlaceholderText("Search jobs...");
-    const minSalaryInput = screen.getByPlaceholderText("Min Salary (SUI)");
-    const maxSalaryInput = screen.getByPlaceholderText("Max Salary (SUI)");
+    const minSalaryInput = screen.getByPlaceholderText("Min Salary ($)");
+    const maxSalaryInput = screen.getByPlaceholderText("Max Salary ($)");
 
     expect(searchInput).toHaveValue("developer");
     expect(minSalaryInput).toHaveValue(60000);
@@ -132,8 +132,8 @@ describe("FilterBar", () => {
   it("should handle empty salary inputs", () => {
     renderFilterBar();
 
-    const minSalaryInput = screen.getByPlaceholderText("Min Salary (SUI)");
-    const maxSalaryInput = screen.getByPlaceholderText("Max Salary (SUI)");
+    const minSalaryInput = screen.getByPlaceholderText("Min Salary ($)");
+    const maxSalaryInput = screen.getByPlaceholderText("Max Salary ($)");
 
     fireEvent.change(minSalaryInput, { target: { value: "" } });
     fireEvent.change(maxSalaryInput, { target: { value: "" } });

@@ -37,7 +37,7 @@ export function FilterBar() {
         {/* Min Salary */}
         <input
           type="number"
-          placeholder="Min Salary (SUI)"
+          placeholder="Min Salary ($)"
           value={filters.salaryMin || ""}
           onChange={(e) =>
             dispatch(setSalaryRange({ min: e.target.value ? parseInt(e.target.value) : null, max: filters.salaryMax }))
@@ -48,12 +48,12 @@ export function FilterBar() {
         {/* Max Salary */}
         <input
           type="number"
-          placeholder="Max Salary (SUI)"
+          placeholder="Max Salary ($)"
           value={filters.salaryMax || ""}
           onChange={(e) =>
             dispatch(setSalaryRange({ min: filters.salaryMin, max: e.target.value ? parseInt(e.target.value) : null }))
           }
-          className="px-4 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="input-soft"
         />
 
         {/* Status */}

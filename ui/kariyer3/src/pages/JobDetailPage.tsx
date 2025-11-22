@@ -85,7 +85,7 @@ export function JobDetailPage() {
               <span className="chip">{job.location}</span>
               <span className="chip">{job.category}</span>
               <span className="chip font-semibold text-main">
-                {minSalary.toLocaleString()} - {maxSalary.toLocaleString()} SUI
+                {minSalary.toLocaleString()} - {maxSalary.toLocaleString()} $
               </span>
             </div>
           </div>

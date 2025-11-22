@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import { useSuiClient } from "@mysten/dapp-kit";
 import { useAuth } from "../providers/AuthProvider";
 import { WALRUS_AGGREGATOR, PACKAGE_ID } from "../config/constants";
@@ -132,7 +133,27 @@ export function MyApplicationsPage() {
     }
   };
 
-  const getCVUrl = (blobId: string) => `${WALRUS_AGGREGATOR}/v1/${blobId}`;
+  const getCVUrl = (blobId: string) => `${WALRUS_AGGREGATOR}/v1/blobs/${blobId}`;
+  const copyCVUrl = async (blobId: string) => {
+    try {
+      await navigator.clipboard.writeText(getCVUrl(blobId));
+      Swal.fire({
+        icon: "success",
+        title: "Copied",
+        text: "CV link copied to clipboard",
+        timer: 1500,
+        showConfirmButton: false,
+        position: "top-end",
+        toast: true,
+      });
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Copy failed",
+        text: "Unable to copy CV link",
+      });
+    }
+  };
 
   const getStatusText = (status: number) => {
     switch (status) {
@@ -225,7 +246,7 @@ export function MyApplicationsPage() {
                       <span className="chip">{app.job.location}</span>
                       <span className="chip">{app.job.category}</span>
                       <span className="chip font-semibold text-main">
-                        {minSalary.toLocaleString()} - {maxSalary.toLocaleString()} SUI
+                        {minSalary.toLocaleString()} - {maxSalary.toLocaleString()} $
                       </span>
                     </div>
                   </div>
@@ -262,14 +283,22 @@ export function MyApplicationsPage() {
                   )}
 
                   <div>
-                    <a
-                      href={getCVUrl(app.cv_blob_id)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-teal-600 dark:text-teal-200 hover:text-main transition-smooth"
-                    >
-                      View Your CV (Walrus Storage)
-                    </a>
+                    <div className="flex items-center gap-3 text-sm">
+                      <button
+                        type="button"
+                        onClick={() => window.open(getCVUrl(app.cv_blob_id), "_blank", "noopener,noreferrer")}
+                        className="text-teal-600 dark:text-teal-200 hover:text-main transition-smooth underline"
+                      >
+                        View your CV (Walrus)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => copyCVUrl(app.cv_blob_id)}
+                        className="text-muted hover:text-main transition-smooth underline"
+                      >
+                        Copy link
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
