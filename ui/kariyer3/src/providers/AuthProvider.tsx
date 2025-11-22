@@ -2,7 +2,7 @@ import { createContext, useContext, ReactNode } from "react";
 import { useCurrentAccount, useDisconnectWallet } from "@mysten/dapp-kit";
 import { useZkLogin, useEnokiFlow } from "@mysten/enoki/react";
 
-interface AuthContextType {
+export interface AuthContextType {
   address: string | null;
   isConnected: boolean;
   isUsingZkLogin: boolean;
@@ -28,6 +28,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const isUsingZkLogin = !!zkLoginAddress;
   const address = zkLoginAddress || currentAccount?.address || null;
   const isConnected = !!address;
+
+  // Debug logging
+  console.log("AuthProvider - zkLoginAddress:", zkLoginAddress);
+  console.log("AuthProvider - currentAccount:", currentAccount?.address);
+  console.log("AuthProvider - final address:", address);
+  console.log("AuthProvider - isConnected:", isConnected);
 
   const logout = () => {
     if (isUsingZkLogin) {
