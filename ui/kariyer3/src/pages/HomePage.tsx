@@ -5,7 +5,7 @@ import { JobList } from "../components/JobList";
 import { FilterBar } from "../components/FilterBar";
 import { setJobs, setLoading, setError } from "../store/slices/jobsSlice";
 import { AppDispatch, RootState } from "../store";
-import { JOB_BOARD_ID } from "../config/constants";
+import { PACKAGE_ID } from "../config/constants";
 
 export function HomePage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,35 +20,49 @@ export function HomePage() {
     dispatch(setLoading(true));
 
     try {
-      // Get all Job objects (shared objects)
-      const result = await client.getOwnedObjects({
-        owner: JOB_BOARD_ID,
-        options: {
-          showContent: true,
-          showType: true,
+      // Query JobPosted events to get all job IDs
+      const events = await client.queryEvents({
+        query: {
+          MoveEventType: `${PACKAGE_ID}::job_board::JobPosted`,
         },
+        limit: 50,
+        order: "descending",
       });
 
-      const jobs = result.data
-        .filter((obj) => obj.data?.type?.includes("::job_board::Job"))
-        .map((obj: any) => {
-          const fields = obj.data?.content?.fields;
-          return {
-            id: fields.id.id,
-            employer: fields.employer,
-            title: fields.title,
-            description: fields.description,
-            company: fields.company,
-            location: fields.location,
-            category: fields.category,
-            salary_range: fields.salary_range,
-            tags: fields.tags,
-            created_at: parseInt(fields.created_at),
-            status: parseInt(fields.status),
-            hired_candidate: fields.hired_candidate?.vec?.[0] || null,
-          };
-        });
+      // Fetch each job object
+      const jobPromises = events.data.map(async (event: any) => {
+        const jobId = event.parsedJson.job_id;
+        try {
+          const jobObject = await client.getObject({
+            id: jobId,
+            options: { showContent: true },
+          });
 
+          if (jobObject.data?.content && "fields" in jobObject.data.content) {
+            const fields = jobObject.data.content.fields as any;
+            return {
+              id: fields.id.id,
+              employer: fields.employer,
+              title: fields.title,
+              description: fields.description,
+              company: fields.company,
+              location: fields.location,
+              category: fields.category,
+              salary_range: fields.salary_range,
+              tags: fields.tags,
+              created_at: parseInt(fields.created_at),
+              status: parseInt(fields.status),
+              hired_candidate: fields.hired_candidate?.vec?.[0] || null,
+            };
+          }
+          return null;
+        } catch (err) {
+          console.error(`Failed to fetch job ${jobId}:`, err);
+          return null;
+        }
+      });
+
+      const jobs = (await Promise.all(jobPromises)).filter((job) => job !== null);
       dispatch(setJobs(jobs));
     } catch (error) {
       console.error("Failed to load jobs:", error);

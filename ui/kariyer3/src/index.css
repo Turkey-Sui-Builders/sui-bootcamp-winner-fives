@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-gray-900 font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  /* Smooth transitions for interactive elements */
+  .transition-smooth {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  /* Typography utilities for font-driven design */
+  .text-display {
+    @apply text-6xl md:text-7xl font-black tracking-tight;
+  }
+
+  .text-heading {
+    @apply text-3xl md:text-4xl font-bold tracking-tight;
+  }
+
+  .text-subheading {
+    @apply text-xl md:text-2xl font-semibold;
+  }
+
+  /* Minimal interactive states - no borders, just opacity */
+  .interactive {
+    @apply transition-smooth hover:opacity-70 active:opacity-50;
+  }
+
+  /* Address formatting */
+  .address {
+    @apply font-mono text-sm text-gray-500;
+  }
+}
