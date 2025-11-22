@@ -206,7 +206,7 @@ export function PostJobPage() {
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <label htmlFor="salaryMin" className="block text-sm font-semibold text-main mb-2">
-              Min Salary (SUI)
+              Min Salary ($)
             </label>
             <input
               id="salaryMin"
@@ -219,7 +219,7 @@ export function PostJobPage() {
           </div>
           <div>
             <label htmlFor="salaryMax" className="block text-sm font-semibold text-main mb-2">
-              Max Salary (SUI)
+              Max Salary ($)
             </label>
             <input
               id="salaryMax"

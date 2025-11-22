@@ -27,7 +27,7 @@ describe("JobCard", () => {
 
   it("should render salary range", () => {
     renderJobCard();
-    expect(screen.getByText(/100,000 - 150,000 SUI/)).toBeInTheDocument();
+    expect(screen.getByText(/100,000 - 150,000 \$/)).toBeInTheDocument();
   });
 
   it("should render job tags", () => {
@@ -83,7 +83,7 @@ describe("JobCard", () => {
       salary_range: [0, 1000] as [number, number],
     };
     renderJobCard(lowSalaryJob);
-    expect(screen.getByText(/0 - 1,000 SUI/)).toBeInTheDocument();
+    expect(screen.getByText(/0 - 1,000 \$/)).toBeInTheDocument();
   });
 
   it("should handle jobs with very high salary", () => {
@@ -92,6 +92,6 @@ describe("JobCard", () => {
       salary_range: [1000000, 5000000] as [number, number],
     };
     renderJobCard(highSalaryJob);
-    expect(screen.getByText(/1,000,000 - 5,000,000 SUI/)).toBeInTheDocument();
+    expect(screen.getByText(/1,000,000 - 5,000,000 \$/)).toBeInTheDocument();
   });
 });
