@@ -4,7 +4,6 @@ import { useSuiClient } from "@mysten/dapp-kit";
 import { useAuth } from "../providers/AuthProvider";
 import { ApplyForm } from "../components/ApplyForm";
 import { Job } from "../store/slices/jobsSlice";
-import { WALRUS_AGGREGATOR } from "../config/constants";
 
 export function JobDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -56,7 +55,7 @@ export function JobDetailPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
-        <p className="text-xl text-gray-500">Loading...</p>
+        <p className="text-xl text-gray-300">Loading...</p>
       </div>
     );
   }
@@ -64,7 +63,7 @@ export function JobDetailPage() {
   if (!job) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
-        <p className="text-xl text-gray-500">Job not found</p>
+        <p className="text-xl text-gray-300">Job not found</p>
       </div>
     );
   }
@@ -74,46 +73,49 @@ export function JobDetailPage() {
   return (
     <div className="space-y-8">
       {/* Job Details */}
-      <div className="border-b border-gray-200 dark:border-gray-800 pb-8">
-        <h1 className="text-5xl font-bold mb-4">{job.title}</h1>
-        <p className="text-2xl text-gray-600 dark:text-gray-400 mb-4">{job.company}</p>
+      <div className="surface rounded-3xl p-8 md:p-10 border border-white/10">
+        <div className="flex items-start justify-between gap-4 mb-6">
+          <div className="space-y-3">
+            <p className="pill w-fit text-amber-200/90">On-chain role</p>
+            <h1 className="text-4xl md:text-5xl font-black leading-tight">{job.title}</h1>
+            <p className="text-xl text-gray-300">{job.company}</p>
 
-        <div className="flex gap-6 text-sm text-gray-500 dark:text-gray-500 mb-6">
-          <span>{job.location}</span>
-          <span>•</span>
-          <span>{job.category}</span>
-          <span>•</span>
-          <span>
-            {minSalary.toLocaleString()} - {maxSalary.toLocaleString()} SUI
-          </span>
+            <div className="flex flex-wrap gap-3 text-sm text-gray-300">
+              <span className="chip">{job.location}</span>
+              <span className="chip">{job.category}</span>
+              <span className="chip font-semibold text-gray-100">
+                {minSalary.toLocaleString()} - {maxSalary.toLocaleString()} SUI
+              </span>
+            </div>
+          </div>
         </div>
 
         {job.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-6">
             {job.tags.map((tag) => (
-              <span key={tag} className="text-xs px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+              <span key={tag} className="chip text-gray-200">
                 {tag}
               </span>
             ))}
           </div>
         )}
 
-        <p className="text-lg text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{job.description}</p>
+        <p className="text-lg text-gray-200 leading-relaxed whitespace-pre-wrap">{job.description}</p>
       </div>
 
       {/* Apply Section */}
       {!showApplyForm ? (
-        <div>
+        <div className="surface rounded-3xl p-6 border border-white/10">
           {!isConnected ? (
-            <p className="text-gray-600 dark:text-gray-400">Please connect your wallet to apply</p>
+            <p className="text-gray-300">Please connect your wallet to apply</p>
           ) : address === job.employer ? (
-            <p className="text-gray-600 dark:text-gray-400">This is your job posting</p>
+            <p className="text-gray-300">This is your job posting</p>
           ) : job.status !== 0 ? (
-            <p className="text-gray-600 dark:text-gray-400">This position is no longer accepting applications</p>
+            <p className="text-gray-300">This position is no longer accepting applications</p>
           ) : (
             <button
               onClick={() => setShowApplyForm(true)}
-              className="px-8 py-3 bg-blue-600 text-white text-lg font-medium hover:bg-blue-700 transition-colors"
+              className="btn-primary text-lg"
             >
               Apply Now
             </button>

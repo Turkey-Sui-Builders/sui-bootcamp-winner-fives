@@ -44,7 +44,6 @@ export function MyApplicationsPage() {
 
     setLoading(true);
     try {
-      // Get all Job objects
       const result = await client.getOwnedObjects({
         owner: import.meta.env.VITE_JOB_BOARD_ID || "0x...",
         options: {
@@ -69,9 +68,7 @@ export function MyApplicationsPage() {
           };
         });
 
-      // In production, you would query dynamic object fields to find applications by current user
-      // For now, this is a placeholder structure
-      // SEAL Pattern: Applications are stored as Dynamic Object Fields, accessible only to employer + applicant
+      // Placeholder: dynamic fields would be queried in production
       const myApplications: ApplicationWithJob[] = [];
 
       setApplications(myApplications);
@@ -82,9 +79,7 @@ export function MyApplicationsPage() {
     }
   };
 
-  const getCVUrl = (blobId: string) => {
-    return `${WALRUS_AGGREGATOR}/v1/${blobId}`;
-  };
+  const getCVUrl = (blobId: string) => `${WALRUS_AGGREGATOR}/v1/${blobId}`;
 
   const getStatusText = (status: number) => {
     switch (status) {
@@ -102,28 +97,30 @@ export function MyApplicationsPage() {
   const getStatusColor = (status: number) => {
     switch (status) {
       case 0:
-        return "text-blue-600 dark:text-blue-400";
+        return "text-teal-300 bg-teal-400/10 border-teal-400/40";
       case 1:
-        return "text-gray-600 dark:text-gray-400";
+        return "text-gray-300 bg-white/5 border-white/10";
       case 2:
-        return "text-green-600 dark:text-green-400";
+        return "text-amber-300 bg-amber-400/10 border-amber-400/40";
       default:
-        return "text-gray-600 dark:text-gray-400";
+        return "text-gray-300 bg-white/5 border-white/10";
     }
   };
 
-  const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleDateString("en-US", {
+  const formatDate = (timestamp: number) =>
+    new Date(timestamp).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
-  };
 
   if (!isConnected) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
-        <p className="text-xl text-gray-500">Please connect your wallet to view your applications</p>
+        <div className="surface rounded-3xl p-10 border border-white/10 text-center space-y-3">
+          <h2 className="text-2xl font-bold text-white">Connect your wallet</h2>
+          <p className="text-gray-400">Track the roles you have applied to in one place.</p>
+        </div>
       </div>
     );
   }
@@ -131,107 +128,93 @@ export function MyApplicationsPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
-        <p className="text-xl text-gray-500">Loading...</p>
+        <p className="text-xl text-gray-300">Loading...</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-8">
-      {/* Header - Font-Driven */}
-      <div className="border-b border-gray-200 dark:border-gray-800 pb-6">
-        <h1 className="text-5xl font-bold mb-2">My Applications</h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400">Track your job applications and their status</p>
+      <div className="surface rounded-3xl p-8 border border-white/10">
+        <p className="pill w-fit text-teal-200/90">Candidate view</p>
+        <h1 className="text-4xl md:text-5xl font-black mb-2">My Applications</h1>
+        <p className="text-lg text-gray-300">Track your job applications and their status.</p>
       </div>
 
-      {/* Applications List */}
       {applications.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-xl text-gray-500 mb-4">You haven't applied to any jobs yet</p>
+        <div className="text-center py-12 surface rounded-3xl border border-white/10">
+          <p className="text-xl text-gray-300 mb-4">You haven't applied to any jobs yet</p>
           <a
             href="/"
-            className="inline-block px-6 py-3 bg-blue-600 text-white text-lg font-medium hover:bg-blue-700 transition-colors"
+            className="btn-primary"
           >
             Browse Jobs
           </a>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-5">
           {applications.map((app) => {
             if (!app.job) return null;
 
             const [minSalary, maxSalary] = app.job.salary_range;
 
             return (
-              <div key={app.id} className="border-b border-gray-200 dark:border-gray-800 pb-6">
-                {/* Job Info */}
-                <div className="space-y-3">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                        <a href={`/job/${app.job.id}`} className="hover:text-blue-600 dark:hover:text-blue-400">
-                          {app.job.title}
-                        </a>
-                      </h3>
-                      <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">{app.job.company}</p>
-                    </div>
-                    <span className={`text-sm font-medium ${getStatusColor(app.job.status)}`}>
-                      {getStatusText(app.job.status)}
-                    </span>
-                  </div>
-
-                  <div className="flex gap-4 text-sm text-gray-500">
-                    <span>{app.job.location}</span>
-                    <span>•</span>
-                    <span>{app.job.category}</span>
-                    <span>•</span>
-                    <span>
-                      {minSalary.toLocaleString()} - {maxSalary.toLocaleString()} SUI
-                    </span>
-                  </div>
-
-                  {/* Application Details */}
-                  <div className="mt-4 pl-6 border-l-2 border-gray-200 dark:border-gray-800 space-y-2">
-                    <p className="text-sm text-gray-500">Applied on {formatDate(app.applied_at)}</p>
-
-                    {/* Cover Message */}
-                    <div>
-                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Your Cover Message:</p>
-                      <p className="text-gray-600 dark:text-gray-400">{app.cover_message}</p>
-                    </div>
-
-                    {/* AI Score Badge */}
-                    {app.ai_score !== null && (
-                      <div className="space-y-1">
-                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">AI Assessment:</p>
-                        <div className="flex items-center gap-2">
-                          <span
-                            className={`text-xs px-2 py-1 ${
-                              app.ai_score >= 80
-                                ? "bg-green-500 text-white"
-                                : app.ai_score >= 60
-                                ? "bg-yellow-500 text-white"
-                                : "bg-red-500 text-white"
-                            }`}
-                          >
-                            Score: {app.ai_score}/100
-                          </span>
-                          {app.ai_analysis && <span className="text-sm text-gray-600 dark:text-gray-400">{app.ai_analysis}</span>}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* CV Link */}
-                    <div>
-                      <a
-                        href={getCVUrl(app.cv_blob_id)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                      >
-                        View Your CV (Walrus Storage)
+              <div key={app.id} className="surface rounded-2xl p-6 border border-white/10">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-bold text-white">
+                      <a href={`/job/${app.job.id}`} className="hover:text-teal-200 transition-smooth">
+                        {app.job.title}
                       </a>
+                    </h3>
+                    <p className="text-lg text-gray-300">{app.job.company}</p>
+                    <div className="flex flex-wrap gap-3 text-sm text-gray-300">
+                      <span className="chip">{app.job.location}</span>
+                      <span className="chip">{app.job.category}</span>
+                      <span className="chip font-semibold text-gray-100">
+                        {minSalary.toLocaleString()} - {maxSalary.toLocaleString()} SUI
+                      </span>
                     </div>
+                  </div>
+                  <span className={`pill border ${getStatusColor(app.job.status)}`}>{getStatusText(app.job.status)}</span>
+                </div>
+
+                <div className="mt-4 panel rounded-xl p-4 border border-white/10 space-y-3">
+                  <p className="text-sm text-gray-400">Applied on {formatDate(app.applied_at)}</p>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-200 mb-1">Your Cover Message</p>
+                    <p className="text-gray-300">{app.cover_message}</p>
+                  </div>
+
+                  {app.ai_score !== null && (
+                    <div className="space-y-1">
+                      <p className="text-sm font-semibold text-gray-200">AI Assessment</p>
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full text-white ${
+                            app.ai_score >= 80
+                              ? "bg-green-500"
+                              : app.ai_score >= 60
+                              ? "bg-yellow-500"
+                              : "bg-red-500"
+                          }`}
+                        >
+                          Score: {app.ai_score}/100
+                        </span>
+                        {app.ai_analysis && <span className="text-sm text-gray-400">{app.ai_analysis}</span>}
+                      </div>
+                    </div>
+                  )}
+
+                  <div>
+                    <a
+                      href={getCVUrl(app.cv_blob_id)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-teal-200 hover:text-white transition-smooth"
+                    >
+                      View Your CV (Walrus Storage)
+                    </a>
                   </div>
                 </div>
               </div>

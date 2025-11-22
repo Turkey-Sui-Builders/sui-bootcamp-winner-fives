@@ -61,7 +61,7 @@ export function PostJobPage() {
       signAndExecute(
         { transaction: tx },
         {
-          onSuccess: (result) => {
+          onSuccess: () => {
             alert("Job posted successfully!");
             navigate("/");
           },
@@ -82,19 +82,26 @@ export function PostJobPage() {
   if (!isConnected) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
-        <p className="text-xl text-gray-500">Please connect your wallet to post a job</p>
+        <div className="surface rounded-3xl p-10 border border-white/10 text-center space-y-4">
+          <h2 className="text-2xl font-bold text-white">Connect your wallet</h2>
+          <p className="text-gray-400">You need to authenticate to publish a new role.</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <h1 className="text-5xl font-bold mb-8">Post a Job</h1>
+    <div className="max-w-3xl mx-auto space-y-8">
+      <div className="space-y-3">
+        <p className="pill w-fit text-amber-200/90">Employer console</p>
+        <h1 className="text-4xl md:text-5xl font-black">Post a Job</h1>
+        <p className="text-lg text-gray-300">Describe your role clearly so candidates can self-select fast.</p>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="surface rounded-3xl p-8 border border-white/10 space-y-6">
         {/* Title */}
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label htmlFor="title" className="block text-sm font-semibold text-gray-200 mb-2">
             Job Title
           </label>
           <input
@@ -103,64 +110,81 @@ export function PostJobPage() {
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
             required
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input-soft"
           />
         </div>
 
-        {/* Company */}
-        <div>
-          <label htmlFor="company" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Company Name
-          </label>
-          <input
-            id="company"
-            type="text"
-            value={formData.company}
-            onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-            required
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        {/* Location */}
-        <div>
-          <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Location
-          </label>
-          <input
-            id="location"
-            type="text"
-            value={formData.location}
-            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-            required
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        {/* Company & Location */}
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="company" className="block text-sm font-semibold text-gray-200 mb-2">
+              Company Name
+            </label>
+            <input
+              id="company"
+              type="text"
+              value={formData.company}
+              onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+              required
+              className="input-soft"
+            />
+          </div>
+          <div>
+            <label htmlFor="location" className="block text-sm font-semibold text-gray-200 mb-2">
+              Location
+            </label>
+            <input
+              id="location"
+              type="text"
+              value={formData.location}
+              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+              required
+              className="input-soft"
+            />
+          </div>
         </div>
 
         {/* Category */}
-        <div>
-          <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Category
-          </label>
-          <select
-            id="category"
-            value={formData.category}
-            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-            required
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            {JOB_CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="category" className="block text-sm font-semibold text-gray-200 mb-2">
+              Category
+            </label>
+            <select
+              id="category"
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              required
+              className="input-soft"
+            >
+              {JOB_CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Tags */}
+          <div>
+            <label htmlFor="tags" className="block text-sm font-semibold text-gray-200 mb-2">
+              Tags (comma-separated)
+            </label>
+            <input
+              id="tags"
+              type="text"
+              value={formData.tags}
+              onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+              placeholder="Rust, Blockchain, Remote"
+              className="input-soft"
+            />
+          </div>
         </div>
 
         {/* Salary Range */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="salaryMin" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label htmlFor="salaryMin" className="block text-sm font-semibold text-gray-200 mb-2">
               Min Salary (SUI)
             </label>
             <input
@@ -169,11 +193,11 @@ export function PostJobPage() {
               value={formData.salaryMin}
               onChange={(e) => setFormData({ ...formData, salaryMin: e.target.value })}
               required
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="input-soft"
             />
           </div>
           <div>
-            <label htmlFor="salaryMax" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label htmlFor="salaryMax" className="block text-sm font-semibold text-gray-200 mb-2">
               Max Salary (SUI)
             </label>
             <input
@@ -182,29 +206,14 @@ export function PostJobPage() {
               value={formData.salaryMax}
               onChange={(e) => setFormData({ ...formData, salaryMax: e.target.value })}
               required
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="input-soft"
             />
           </div>
         </div>
 
-        {/* Tags */}
-        <div>
-          <label htmlFor="tags" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Tags (comma-separated)
-          </label>
-          <input
-            id="tags"
-            type="text"
-            value={formData.tags}
-            onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-            placeholder="Rust, Blockchain, Remote"
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
         {/* Description */}
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label htmlFor="description" className="block text-sm font-semibold text-gray-200 mb-2">
             Job Description
           </label>
           <textarea
@@ -213,7 +222,7 @@ export function PostJobPage() {
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             rows={8}
             required
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input-soft min-h-[180px]"
           />
         </div>
 
@@ -221,7 +230,7 @@ export function PostJobPage() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full px-6 py-3 bg-blue-600 text-white text-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="w-full btn-primary text-lg disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {submitting ? "Posting..." : "Post Job"}
         </button>

@@ -32,9 +32,11 @@ export function ConnectButton() {
 
   if (isConnected) {
     return (
-      <div className="flex items-center gap-4">
-        <span className="address">{address?.slice(0, 6)}...{address?.slice(-4)}</span>
-        <button onClick={logout} className="text-sm font-medium text-gray-600 interactive">
+      <div className="flex items-center gap-3">
+        <span className="chip font-mono text-xs text-gray-100">
+          {address?.slice(0, 6)}...{address?.slice(-4)}
+        </span>
+        <button onClick={logout} className="text-sm font-semibold text-gray-300 hover:text-white transition-smooth">
           Disconnect
         </button>
       </div>
@@ -42,9 +44,9 @@ export function ConnectButton() {
   }
 
   return (
-    <div className="flex items-center gap-4">
-      {/* Primary: Google zkLogin - Borderless */}
-      <button onClick={handleGoogleLogin} className="px-6 py-3 bg-black text-white font-semibold interactive">
+    <div className="flex items-center gap-3">
+      {/* Primary: Google zkLogin */}
+      <button onClick={handleGoogleLogin} className="btn-primary">
         Sign in with Google
       </button>
 
