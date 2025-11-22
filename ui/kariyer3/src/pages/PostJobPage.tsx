@@ -1,4 +1,5 @@
 import { useState, FormEvent } from "react";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
@@ -28,7 +29,11 @@ export function PostJobPage() {
     e.preventDefault();
 
     if (!isConnected || !address) {
-      alert("Please connect your wallet");
+      Swal.fire({
+        icon: "warning",
+        title: "Connect wallet",
+        text: "Please connect your wallet to post a job.",
+      });
       return;
     }
 
@@ -62,19 +67,35 @@ export function PostJobPage() {
         { transaction: tx },
         {
           onSuccess: () => {
-            alert("Job posted successfully!");
+            Swal.fire({
+              icon: "success",
+              title: "Job posted",
+              text: "Your role is now live.",
+              timer: 2000,
+              showConfirmButton: false,
+              position: "top-end",
+              toast: true,
+            });
             navigate("/");
           },
           onError: (error) => {
             console.error("Transaction failed:", error);
-            alert(`Failed to post job: ${error.message}`);
+            Swal.fire({
+              icon: "error",
+              title: "Post failed",
+              text: error.message || "Failed to post job",
+            });
             setSubmitting(false);
           },
         }
       );
     } catch (error) {
       console.error("Failed to post job:", error);
-      alert(error instanceof Error ? error.message : "Failed to post job");
+      Swal.fire({
+        icon: "error",
+        title: "Post failed",
+        text: error instanceof Error ? error.message : "Failed to post job",
+      });
       setSubmitting(false);
     }
   };
