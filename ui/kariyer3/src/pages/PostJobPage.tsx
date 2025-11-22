@@ -2,6 +2,7 @@ import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
+import { bcs } from "@mysten/sui/bcs";
 import { useAuth } from "../providers/AuthProvider";
 import { PACKAGE_ID, JOB_BOARD_ID, CLOCK_ID, JOB_CATEGORIES } from "../config/constants";
 
@@ -52,7 +53,7 @@ export function PostJobPage() {
           tx.pure.string(formData.category),
           tx.pure.u64(parseInt(formData.salaryMin) || 0),
           tx.pure.u64(parseInt(formData.salaryMax) || 0),
-          tx.pure(tags.map((t) => ({ type: "string", value: t }))),
+          tx.pure(bcs.vector(bcs.string()).serialize(tags)),
           tx.object(CLOCK_ID),
         ],
       });
