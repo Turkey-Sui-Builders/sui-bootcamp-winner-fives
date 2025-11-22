@@ -8,7 +8,7 @@ export function Header() {
         <div className="flex justify-between items-center">
           {/* Logo & Nav - Font-Driven, Borderless */}
           <div className="flex items-center gap-12">
-            <Link to="/" className="text-4xl font-black tracking-tight interactive">
+            <Link to="/" className="text-4xl font-black text-gray-600 tracking-tight interactive">
               Kariyer3
             </Link>
 
