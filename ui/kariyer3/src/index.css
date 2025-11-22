@@ -3,8 +3,23 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bg: #05080f;
+    --card: rgba(255, 255, 255, 0.04);
+    --panel: rgba(255, 255, 255, 0.06);
+    --stroke: rgba(255, 255, 255, 0.12);
+    --text: #e5e7eb;
+    --muted: #9ca3af;
+    --accent: #2dd4bf;
+    --accent-2: #f59e0b;
+  }
+
   body {
-    @apply bg-white text-gray-900 font-sans;
+    @apply text-gray-50 font-sans;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(45, 212, 191, 0.12), transparent 26%),
+      radial-gradient(circle at 80% 0%, rgba(245, 158, 11, 0.12), transparent 24%),
+      linear-gradient(180deg, #05080f 0%, #070c1a 35%, #05080f 100%);
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
@@ -36,5 +51,53 @@
   /* Address formatting */
   .address {
     @apply font-mono text-sm text-gray-500;
+  }
+
+  /* Surfaces */
+  .surface {
+    background: var(--card);
+    border: 1px solid var(--stroke);
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
+  }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--stroke);
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.25);
+  }
+
+  .pill {
+    @apply px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-white transition-smooth;
+    background: linear-gradient(120deg, #2dd4bf, #14b8a6);
+    box-shadow: 0 15px 35px rgba(20, 184, 166, 0.4);
+  }
+
+  .btn-primary:hover {
+    filter: brightness(1.05);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold text-gray-200 transition-smooth;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .input-soft {
+    @apply w-full px-4 py-3 rounded-xl text-gray-50 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-400;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.14);
   }
 }

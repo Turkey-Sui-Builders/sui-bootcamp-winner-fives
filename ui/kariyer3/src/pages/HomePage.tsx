@@ -71,13 +71,40 @@ export function HomePage() {
   };
 
   return (
-    <div className="space-y-8">
-      {/* Hero Section - Font-Driven */}
-      <div className="py-12 border-b border-gray-200 dark:border-gray-800">
-        <h1 className="text-6xl font-bold mb-4">Find Your Next Opportunity</h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400">
-          Decentralized job board powered by Sui blockchain
-        </p>
+    <div className="space-y-10">
+      {/* Hero */}
+      <div className="surface rounded-3xl p-8 md:p-12 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none opacity-60">
+          <div className="absolute -top-16 right-10 h-52 w-52 rounded-full bg-teal-400/20 blur-3xl" />
+          <div className="absolute bottom-[-140px] left-10 h-64 w-64 rounded-full bg-amber-400/15 blur-3xl" />
+        </div>
+        <div className="relative max-w-3xl space-y-5">
+          <p className="pill text-amber-200/90 w-fit">On-chain careers</p>
+          <h1 className="text-5xl md:text-6xl font-black leading-tight">
+            Find roles that match your ambition.
+          </h1>
+          <p className="text-lg text-gray-300 max-w-2xl">
+            Curated opportunities posted and verified on Sui. Search transparently, apply with confidence,
+            and get hired without gatekeepers.
+          </p>
+          <div className="flex flex-wrap gap-3 pt-2">
+            <a href="/post" className="btn-primary">Post a role</a>
+            <a href="/my-applications" className="btn-ghost">Track my applications</a>
+          </div>
+        </div>
+
+        <div className="relative mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[
+            { label: "Open roles", value: "Live & on-chain" },
+            { label: "Secure storage", value: "Walrus powered CVs" },
+            { label: "Trustless hiring", value: "Wallet-native offers" },
+          ].map((stat) => (
+            <div key={stat.label} className="panel rounded-2xl p-4">
+              <p className="text-sm text-gray-400">{stat.label}</p>
+              <p className="text-xl font-semibold text-gray-50 mt-1">{stat.value}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Filters */}
@@ -87,7 +114,7 @@ export function HomePage() {
       <div>
         {loading ? (
           <div className="text-center py-12">
-            <p className="text-xl text-gray-500">Loading jobs...</p>
+            <p className="text-xl text-gray-300">Loading jobs...</p>
           </div>
         ) : (
           <JobList />

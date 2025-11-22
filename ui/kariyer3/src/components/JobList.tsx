@@ -55,7 +55,7 @@ export function JobList() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
-        <div className="text-xl text-gray-500">Loading jobs...</div>
+        <div className="text-xl text-gray-300">Loading jobs...</div>
       </div>
     );
   }
@@ -71,13 +71,13 @@ export function JobList() {
   if (filteredJobs.length === 0) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
-        <div className="text-xl text-gray-500">No jobs found</div>
+        <div className="text-xl text-gray-400">No jobs found</div>
       </div>
     );
   }
 
   return (
-    <div className="divide-y divide-gray-200 dark:divide-gray-800">
+    <div className="grid gap-4">
       {filteredJobs.map((job) => (
         <JobCard key={job.id} job={job} />
       ))}
