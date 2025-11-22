@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 import { useEnokiFlow } from "@mysten/enoki/react";
 import { ConnectButton as DappKitConnectButton } from "@mysten/dapp-kit";
 import { useAuth } from "../providers/AuthProvider";
@@ -39,23 +40,32 @@ export function ConnectButton() {
       window.location.href = authUrl;
     } catch (error) {
       console.error("Google login failed:", error);
-      alert("Failed to initiate Google login");
+      Swal.fire({
+        icon: "error",
+        title: "Login failed",
+        text: "Failed to initiate Google login",
+        timer: 2000,
+        showConfirmButton: false,
+        position: "top-end",
+        toast: true,
+      });
     }
   };
 
   if (isConnected) {
     return (
-      <div className="flex items-center gap-3">
-        <span className="chip font-mono text-xs">
+      <div className="flex items-center gap-2">
+        <span className="chip font-mono text-xs inline-flex items-center gap-2">
           {address?.slice(0, 6)}...{address?.slice(-4)}
+          <button
+            onClick={handleCopy}
+            className="text-muted hover:text-main transition-smooth"
+            title="Copy address"
+            aria-label="Copy wallet address"
+          >
+            {copied ? "✔" : "⧉"}
+          </button>
         </span>
-        <button
-          onClick={handleCopy}
-          className="btn-ghost text-xs px-3 py-2"
-          title="Copy address"
-        >
-          {copied ? "Copied!" : "Copy"}
-        </button>
         <button onClick={logout} className="text-sm font-semibold text-muted hover:text-main transition-smooth">
           Disconnect
         </button>

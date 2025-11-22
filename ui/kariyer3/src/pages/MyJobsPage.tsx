@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import { useSuiClient, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { useAuth } from "../providers/AuthProvider";
@@ -137,12 +138,24 @@ export function MyJobsPage() {
       { transaction: tx },
       {
         onSuccess: () => {
-          alert("Candidate hired successfully!");
+          Swal.fire({
+            icon: "success",
+            title: "Candidate hired",
+            text: "Offer executed successfully.",
+            timer: 2000,
+            showConfirmButton: false,
+            position: "top-end",
+            toast: true,
+          });
           loadMyJobs();
         },
         onError: (error) => {
           console.error("Transaction failed:", error);
-          alert(`Failed to hire candidate: ${error.message}`);
+          Swal.fire({
+            icon: "error",
+            title: "Hire failed",
+            text: error.message || "Failed to hire candidate",
+          });
         },
       }
     );

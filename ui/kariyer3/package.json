@@ -21,7 +21,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.0.4",
-    "react-router-dom": "^6.21.1"
+    "react-router-dom": "^6.21.1",
+    "sweetalert2": "^11.26.3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.5",
