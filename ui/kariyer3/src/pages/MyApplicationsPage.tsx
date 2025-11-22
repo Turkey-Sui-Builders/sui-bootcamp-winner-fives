@@ -93,9 +93,13 @@ export function MyApplicationsPage() {
             },
           });
 
-          if (!appDynamicField.data || !appDynamicField.data.content) return null;
+          if (!appDynamicField.data || !appDynamicField.data.content) {
+            console.log("Application dynamic field not found:", applicationId);
+            return null;
+          }
 
-          const appFields = (appDynamicField.data.content as any).fields.value.fields;
+          const content = appDynamicField.data.content as any;
+          const appFields = content.fields;
 
           const application: ApplicationWithJob = {
             id: applicationId,
