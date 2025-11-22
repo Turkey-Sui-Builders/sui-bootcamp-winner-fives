@@ -77,13 +77,13 @@ export function JobDetailPage() {
         <div className="flex items-start justify-between gap-4 mb-6">
           <div className="space-y-3">
             <p className="pill w-fit text-amber-200/90">On-chain role</p>
-            <h1 className="text-4xl md:text-5xl font-black leading-tight">{job.title}</h1>
-            <p className="text-xl text-gray-300">{job.company}</p>
+            <h1 className="text-4xl md:text-5xl font-black leading-tight text-main">{job.title}</h1>
+            <p className="text-xl text-muted">{job.company}</p>
 
-            <div className="flex flex-wrap gap-3 text-sm text-gray-300">
+            <div className="flex flex-wrap gap-3 text-sm text-muted">
               <span className="chip">{job.location}</span>
               <span className="chip">{job.category}</span>
-              <span className="chip font-semibold text-gray-100">
+              <span className="chip font-semibold text-main">
                 {minSalary.toLocaleString()} - {maxSalary.toLocaleString()} SUI
               </span>
             </div>
@@ -93,25 +93,25 @@ export function JobDetailPage() {
         {job.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-6">
             {job.tags.map((tag) => (
-              <span key={tag} className="chip text-gray-200">
+              <span key={tag} className="chip">
                 {tag}
               </span>
             ))}
           </div>
         )}
 
-        <p className="text-lg text-gray-200 leading-relaxed whitespace-pre-wrap">{job.description}</p>
+        <p className="text-lg text-main leading-relaxed whitespace-pre-wrap">{job.description}</p>
       </div>
 
       {/* Apply Section */}
       {!showApplyForm ? (
         <div className="surface rounded-3xl p-6 border border-white/10">
           {!isConnected ? (
-            <p className="text-gray-300">Please connect your wallet to apply</p>
+            <p className="text-muted">Please connect your wallet to apply</p>
           ) : address === job.employer ? (
-            <p className="text-gray-300">This is your job posting</p>
+            <p className="text-muted">This is your job posting</p>
           ) : job.status !== 0 ? (
-            <p className="text-gray-300">This position is no longer accepting applications</p>
+            <p className="text-muted">This position is no longer accepting applications</p>
           ) : (
             <button
               onClick={() => setShowApplyForm(true)}

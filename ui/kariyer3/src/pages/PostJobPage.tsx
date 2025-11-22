@@ -83,8 +83,8 @@ export function PostJobPage() {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
         <div className="surface rounded-3xl p-10 border border-white/10 text-center space-y-4">
-          <h2 className="text-2xl font-bold text-white">Connect your wallet</h2>
-          <p className="text-gray-400">You need to authenticate to publish a new role.</p>
+          <h2 className="text-2xl font-bold text-main">Connect your wallet</h2>
+          <p className="text-muted">You need to authenticate to publish a new role.</p>
         </div>
       </div>
     );
@@ -94,14 +94,14 @@ export function PostJobPage() {
     <div className="max-w-3xl mx-auto space-y-8">
       <div className="space-y-3">
         <p className="pill w-fit text-amber-200/90">Employer console</p>
-        <h1 className="text-4xl md:text-5xl font-black">Post a Job</h1>
-        <p className="text-lg text-gray-300">Describe your role clearly so candidates can self-select fast.</p>
+        <h1 className="text-4xl md:text-5xl font-black text-main">Post a Job</h1>
+        <p className="text-lg text-muted">Describe your role clearly so candidates can self-select fast.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="surface rounded-3xl p-8 border border-white/10 space-y-6">
         {/* Title */}
         <div>
-          <label htmlFor="title" className="block text-sm font-semibold text-gray-200 mb-2">
+          <label htmlFor="title" className="block text-sm font-semibold text-main mb-2">
             Job Title
           </label>
           <input
@@ -117,7 +117,7 @@ export function PostJobPage() {
         {/* Company & Location */}
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="company" className="block text-sm font-semibold text-gray-200 mb-2">
+            <label htmlFor="company" className="block text-sm font-semibold text-main mb-2">
               Company Name
             </label>
             <input
@@ -130,7 +130,7 @@ export function PostJobPage() {
             />
           </div>
           <div>
-            <label htmlFor="location" className="block text-sm font-semibold text-gray-200 mb-2">
+            <label htmlFor="location" className="block text-sm font-semibold text-main mb-2">
               Location
             </label>
             <input
@@ -147,7 +147,7 @@ export function PostJobPage() {
         {/* Category */}
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="category" className="block text-sm font-semibold text-gray-200 mb-2">
+            <label htmlFor="category" className="block text-sm font-semibold text-main mb-2">
               Category
             </label>
             <select
@@ -167,7 +167,7 @@ export function PostJobPage() {
 
           {/* Tags */}
           <div>
-            <label htmlFor="tags" className="block text-sm font-semibold text-gray-200 mb-2">
+            <label htmlFor="tags" className="block text-sm font-semibold text-main mb-2">
               Tags (comma-separated)
             </label>
             <input
@@ -184,7 +184,7 @@ export function PostJobPage() {
         {/* Salary Range */}
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="salaryMin" className="block text-sm font-semibold text-gray-200 mb-2">
+            <label htmlFor="salaryMin" className="block text-sm font-semibold text-main mb-2">
               Min Salary (SUI)
             </label>
             <input
@@ -197,7 +197,7 @@ export function PostJobPage() {
             />
           </div>
           <div>
-            <label htmlFor="salaryMax" className="block text-sm font-semibold text-gray-200 mb-2">
+            <label htmlFor="salaryMax" className="block text-sm font-semibold text-main mb-2">
               Max Salary (SUI)
             </label>
             <input
@@ -213,7 +213,7 @@ export function PostJobPage() {
 
         {/* Description */}
         <div>
-          <label htmlFor="description" className="block text-sm font-semibold text-gray-200 mb-2">
+          <label htmlFor="description" className="block text-sm font-semibold text-main mb-2">
             Job Description
           </label>
           <textarea

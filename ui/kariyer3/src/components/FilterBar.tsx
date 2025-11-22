@@ -72,7 +72,7 @@ export function FilterBar() {
       {/* Reset */}
       <button
         onClick={() => dispatch(resetFilters())}
-        className="text-sm font-semibold text-teal-200 hover:text-white transition-smooth"
+        className="text-sm font-semibold text-teal-600 dark:text-teal-200 hover:text-main transition-smooth"
       >
         Reset Filters
       </button>

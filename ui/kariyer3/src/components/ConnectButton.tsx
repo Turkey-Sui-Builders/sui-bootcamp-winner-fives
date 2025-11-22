@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useEnokiFlow } from "@mysten/enoki/react";
 import { ConnectButton as DappKitConnectButton } from "@mysten/dapp-kit";
 import { useAuth } from "../providers/AuthProvider";
@@ -6,6 +7,18 @@ import { GOOGLE_CLIENT_ID, NETWORK } from "../config/constants";
 export function ConnectButton() {
   const { address, isConnected, isUsingZkLogin, logout } = useAuth();
   const enokiFlow = useEnokiFlow();
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    if (!address) return;
+    try {
+      await navigator.clipboard.writeText(address);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (err) {
+      console.error("Copy failed", err);
+    }
+  };
 
   const handleGoogleLogin = async () => {
     try {
@@ -33,10 +46,17 @@ export function ConnectButton() {
   if (isConnected) {
     return (
       <div className="flex items-center gap-3">
-        <span className="chip font-mono text-xs text-gray-100">
+        <span className="chip font-mono text-xs">
           {address?.slice(0, 6)}...{address?.slice(-4)}
         </span>
-        <button onClick={logout} className="text-sm font-semibold text-gray-300 hover:text-white transition-smooth">
+        <button
+          onClick={handleCopy}
+          className="btn-ghost text-xs px-3 py-2"
+          title="Copy address"
+        >
+          {copied ? "Copied!" : "Copy"}
+        </button>
+        <button onClick={logout} className="text-sm font-semibold text-muted hover:text-main transition-smooth">
           Disconnect
         </button>
       </div>
