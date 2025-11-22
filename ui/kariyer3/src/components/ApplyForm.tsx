@@ -1,6 +1,6 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import Swal from "sweetalert2";
-import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
+import { useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { useEnokiFlow, useZkLogin } from "@mysten/enoki/react";
 import { useWalrusUpload } from "../hooks/useWalrusUpload";
@@ -21,11 +21,9 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
 
   const { uploadFile, uploading, error: uploadError } = useWalrusUpload();
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
+  const suiClient = useSuiClient();
   const enokiFlow = useEnokiFlow();
   const { address: zkLoginAddress } = useZkLogin();
-
-  // Debug: Log auth state
-  console.log("ApplyForm - isConnected:", isConnected, "address:", address, "isUsingZkLogin:", isUsingZkLogin);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -89,12 +87,11 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
 
       // Use zkLogin (Enoki) or regular wallet based on auth method
       if (isUsingZkLogin && zkLoginAddress) {
-        console.log("Executing with zkLogin/Enoki...");
         const result = await enokiFlow.sponsorAndExecuteTransaction({
-          transaction: tx,
+          transaction: tx as any,
+          client: suiClient as any,
           network: "testnet",
         });
-        console.log("zkLogin transaction result:", result);
         Swal.fire({
           icon: "success",
           title: "Application submitted",

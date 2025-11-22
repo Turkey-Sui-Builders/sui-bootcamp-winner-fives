@@ -6,7 +6,7 @@ import { useAuth } from "../providers/AuthProvider";
 import { GOOGLE_CLIENT_ID, NETWORK } from "../config/constants";
 
 export function ConnectButton() {
-  const { address, isConnected, isUsingZkLogin, logout } = useAuth();
+  const { address, isConnected, logout } = useAuth();
   const enokiFlow = useEnokiFlow();
   const [copied, setCopied] = useState(false);
 
