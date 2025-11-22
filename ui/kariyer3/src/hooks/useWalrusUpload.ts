@@ -15,19 +15,24 @@ export function useWalrusUpload() {
     setError(null);
 
     try {
-      // Calculate epochs (30 days = ~4320 epochs at 6s per epoch)
-      const epochs = 4320;
+      // Check file size (max 10MB for testnet)
+      const maxSize = 10 * 1024 * 1024; // 10MB
+      if (file.size > maxSize) {
+        throw new Error(`File too large. Max size is ${maxSize / 1024 / 1024}MB`);
+      }
 
-      const response = await fetch(`${WALRUS_PUBLISHER}/v1/store?epochs=${epochs}`, {
+      // Use 5 epochs (~30 seconds) for testnet
+      const epochs = 5;
+
+      const response = await fetch(`${WALRUS_PUBLISHER}/v1/blobs?epochs=${epochs}`, {
         method: "PUT",
         body: file,
-        headers: {
-          "Content-Type": file.type || "application/octet-stream",
-        },
       });
 
       if (!response.ok) {
-        throw new Error(`Upload failed: ${response.statusText}`);
+        const errorText = await response.text();
+        console.error("Walrus upload error:", errorText);
+        throw new Error(`Upload failed (${response.status}): ${errorText || response.statusText}`);
       }
 
       const data = await response.json();
@@ -36,9 +41,12 @@ export function useWalrusUpload() {
       let blobId: string;
       if (data.newlyCreated?.blobObject?.blobId) {
         blobId = data.newlyCreated.blobObject.blobId;
+      } else if (data.alreadyCertified?.blobObject?.blobId) {
+        blobId = data.alreadyCertified.blobObject.blobId;
       } else if (data.alreadyCertified?.blobId) {
         blobId = data.alreadyCertified.blobId;
       } else {
+        console.error("Walrus response:", data);
         throw new Error("Invalid response format from Walrus");
       }
 
