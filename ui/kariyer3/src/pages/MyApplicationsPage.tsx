@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSuiClient } from "@mysten/dapp-kit";
 import { useAuth } from "../providers/AuthProvider";
-import { WALRUS_AGGREGATOR } from "../config/constants";
+import { WALRUS_AGGREGATOR, PACKAGE_ID } from "../config/constants";
 
 interface Job {
   id: string;
@@ -44,32 +44,85 @@ export function MyApplicationsPage() {
 
     setLoading(true);
     try {
-      const result = await client.getOwnedObjects({
-        owner: import.meta.env.VITE_JOB_BOARD_ID || "0x...",
-        options: {
-          showContent: true,
-          showType: true,
+      // Query ApplicationSubmitted events to find applications by current user
+      const events = await client.queryEvents({
+        query: {
+          MoveEventType: `${PACKAGE_ID}::job_board::ApplicationSubmitted`,
         },
+        limit: 100,
+        order: "descending",
       });
 
-      const jobs = result.data
-        .filter((obj) => obj.data?.type?.includes("::job_board::Job"))
-        .map((obj: any) => {
-          const fields = obj.data?.content?.fields;
-          return {
-            id: fields.id.id,
-            employer: fields.employer,
-            title: fields.title,
-            company: fields.company,
-            location: fields.location,
-            category: fields.category,
-            salary_range: fields.salary_range,
-            status: parseInt(fields.status),
-          };
-        });
+      // Filter events by current user's address
+      const myApplicationEvents = events.data.filter(
+        (event: any) => event.parsedJson.applicant === address
+      );
 
-      // Placeholder: dynamic fields would be queried in production
-      const myApplications: ApplicationWithJob[] = [];
+      // For each application, fetch the job and application details
+      const applicationPromises = myApplicationEvents.map(async (event: any) => {
+        try {
+          const jobId = event.parsedJson.job_id;
+          const applicationId = event.parsedJson.application_id;
+
+          // Fetch job object
+          const jobObject = await client.getObject({
+            id: jobId,
+            options: { showContent: true },
+          });
+
+          if (!jobObject.data || !jobObject.data.content) return null;
+
+          const jobFields = (jobObject.data.content as any).fields;
+          const job: Job = {
+            id: jobId,
+            employer: jobFields.employer,
+            title: jobFields.title,
+            company: jobFields.company,
+            location: jobFields.location,
+            category: jobFields.category,
+            salary_range: jobFields.salary_range,
+            status: parseInt(jobFields.status),
+          };
+
+          // Fetch application from dynamic field
+          const appDynamicField = await client.getDynamicFieldObject({
+            parentId: jobId,
+            name: {
+              type: "0x2::object::ID",
+              value: applicationId,
+            },
+          });
+
+          if (!appDynamicField.data || !appDynamicField.data.content) {
+            console.log("Application dynamic field not found:", applicationId);
+            return null;
+          }
+
+          const content = appDynamicField.data.content as any;
+          const appFields = content.fields;
+
+          const application: ApplicationWithJob = {
+            id: applicationId,
+            job_id: jobId,
+            applicant: appFields.applicant,
+            cover_message: appFields.cover_message,
+            cv_blob_id: appFields.cv_blob_id,
+            applied_at: parseInt(appFields.applied_at),
+            ai_score: appFields.ai_score ? parseInt(appFields.ai_score) : null,
+            ai_analysis: appFields.ai_analysis || null,
+            job,
+          };
+
+          return application;
+        } catch (err) {
+          console.error("Error fetching application:", err);
+          return null;
+        }
+      });
+
+      const myApplications = (await Promise.all(applicationPromises)).filter(
+        (app) => app !== null
+      ) as ApplicationWithJob[];
 
       setApplications(myApplications);
       setLoading(false);
@@ -176,7 +229,9 @@ export function MyApplicationsPage() {
                       </span>
                     </div>
                   </div>
-                  <span className={`pill border ${getStatusColor(app.job.status)}`}>{getStatusText(app.job.status)}</span>
+                  <span className={`pill border ${getStatusColor(app.job.status)}`}>
+                    {getStatusText(app.job.status)}
+                  </span>
                 </div>
 
                 <div className="mt-4 panel rounded-xl p-4 border border-white/10 space-y-3">
