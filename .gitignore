@@ -292,9 +292,7 @@ rust-project.json
 *.asp
 *.cer
 *.csr
-*.css
 *.htm
-*.html
 *.js
 *.jsp
 *.php
