@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import { useSuiClient } from "@mysten/dapp-kit";
 import { useAuth } from "../providers/AuthProvider";
@@ -126,7 +127,15 @@ export function JobDetailPage() {
           jobId={job.id}
           onSuccess={() => {
             setShowApplyForm(false);
-            alert("Application submitted successfully!");
+            Swal.fire({
+              icon: "success",
+              title: "Application submitted",
+              text: "Your application has been sent.",
+              timer: 2000,
+              showConfirmButton: false,
+              position: "top-end",
+              toast: true,
+            });
           }}
           onCancel={() => setShowApplyForm(false)}
         />

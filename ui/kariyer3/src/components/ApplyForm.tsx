@@ -1,4 +1,5 @@
 import { useState, FormEvent, ChangeEvent } from "react";
+import Swal from "sweetalert2";
 import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { useEnokiFlow, useZkLogin } from "@mysten/enoki/react";
@@ -36,17 +37,29 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
     e.preventDefault();
 
     if (!address) {
-      alert("Please connect your wallet");
+      Swal.fire({
+        icon: "warning",
+        title: "Connect wallet",
+        text: "Please connect your wallet to apply.",
+      });
       return;
     }
 
     if (!cvFile) {
-      alert("Please select a CV file");
+      Swal.fire({
+        icon: "info",
+        title: "Add your CV",
+        text: "Please select a CV file before submitting.",
+      });
       return;
     }
 
     if (!coverMessage.trim()) {
-      alert("Please write a cover message");
+      Swal.fire({
+        icon: "info",
+        title: "Add a cover message",
+        text: "Tell the employer why you're a great fit.",
+      });
       return;
     }
 
@@ -82,7 +95,15 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
           network: "testnet",
         });
         console.log("zkLogin transaction result:", result);
-        alert("Application submitted successfully!");
+        Swal.fire({
+          icon: "success",
+          title: "Application submitted",
+          text: "Your application has been sent.",
+          timer: 2000,
+          showConfirmButton: false,
+          position: "top-end",
+          toast: true,
+        });
         onSuccess();
         setSubmitting(false);
       } else {
@@ -93,12 +114,24 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
           },
           {
             onSuccess: () => {
-              alert("Application submitted successfully!");
+              Swal.fire({
+                icon: "success",
+                title: "Application submitted",
+                text: "Your application has been sent.",
+                timer: 2000,
+                showConfirmButton: false,
+                position: "top-end",
+                toast: true,
+              });
               onSuccess();
             },
             onError: (error) => {
               console.error("Transaction failed:", error);
-              alert(`Failed to submit application: ${error.message}`);
+              Swal.fire({
+                icon: "error",
+                title: "Submission failed",
+                text: error.message || "Failed to submit application",
+              });
               setSubmitting(false);
             },
           }
@@ -106,7 +139,11 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
       }
     } catch (error) {
       console.error("Application failed:", error);
-      alert(error instanceof Error ? error.message : "Failed to submit application");
+      Swal.fire({
+        icon: "error",
+        title: "Submission failed",
+        text: error instanceof Error ? error.message : "Failed to submit application",
+      });
       setSubmitting(false);
     }
   };
