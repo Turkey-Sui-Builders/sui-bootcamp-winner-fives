@@ -1,6 +1,7 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
+import { useEnokiFlow, useZkLogin } from "@mysten/enoki/react";
 import { useWalrusUpload } from "../hooks/useWalrusUpload";
 import { PACKAGE_ID, JOB_BOARD_ID, CLOCK_ID } from "../config/constants";
 import { useAuth } from "../providers/AuthProvider";
@@ -12,13 +13,18 @@ interface ApplyFormProps {
 }
 
 export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
-  const { address } = useAuth();
+  const { address, isConnected, isUsingZkLogin } = useAuth();
   const [coverMessage, setCoverMessage] = useState("");
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const { uploadFile, uploading, error: uploadError } = useWalrusUpload();
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
+  const enokiFlow = useEnokiFlow();
+  const { address: zkLoginAddress } = useZkLogin();
+
+  // Debug: Log auth state
+  console.log("ApplyForm - isConnected:", isConnected, "address:", address, "isUsingZkLogin:", isUsingZkLogin);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -68,22 +74,36 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
         ],
       });
 
-      signAndExecute(
-        {
+      // Use zkLogin (Enoki) or regular wallet based on auth method
+      if (isUsingZkLogin && zkLoginAddress) {
+        console.log("Executing with zkLogin/Enoki...");
+        const result = await enokiFlow.sponsorAndExecuteTransaction({
           transaction: tx,
-        },
-        {
-          onSuccess: () => {
-            alert("Application submitted successfully!");
-            onSuccess();
+          network: "testnet",
+        });
+        console.log("zkLogin transaction result:", result);
+        alert("Application submitted successfully!");
+        onSuccess();
+        setSubmitting(false);
+      } else {
+        console.log("Executing with regular wallet...");
+        signAndExecute(
+          {
+            transaction: tx,
           },
-          onError: (error) => {
-            console.error("Transaction failed:", error);
-            alert(`Failed to submit application: ${error.message}`);
-            setSubmitting(false);
-          },
-        }
-      );
+          {
+            onSuccess: () => {
+              alert("Application submitted successfully!");
+              onSuccess();
+            },
+            onError: (error) => {
+              console.error("Transaction failed:", error);
+              alert(`Failed to submit application: ${error.message}`);
+              setSubmitting(false);
+            },
+          }
+        );
+      }
     } catch (error) {
       console.error("Application failed:", error);
       alert(error instanceof Error ? error.message : "Failed to submit application");
