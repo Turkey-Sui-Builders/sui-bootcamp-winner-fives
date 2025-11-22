@@ -112,12 +112,12 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 p-6 bg-white dark:bg-gray-900">
-      <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Apply for this Position</h2>
+    <form onSubmit={handleSubmit} className="space-y-6 p-6 surface rounded-2xl border border-white/10">
+      <h2 className="text-3xl font-bold text-gray-50">Apply for this Position</h2>
 
       {/* Cover Message */}
       <div>
-        <label htmlFor="cover" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label htmlFor="cover" className="block text-sm font-semibold text-gray-200 mb-2">
           Cover Message
         </label>
         <textarea
@@ -125,7 +125,7 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
           value={coverMessage}
           onChange={(e) => setCoverMessage(e.target.value)}
           rows={6}
-          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="input-soft min-h-[140px]"
           placeholder="Tell us why you're a great fit..."
           required
         />
@@ -133,7 +133,7 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
 
       {/* CV Upload */}
       <div>
-        <label htmlFor="cv" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label htmlFor="cv" className="block text-sm font-semibold text-gray-200 mb-2">
           Upload CV (Walrus Storage)
         </label>
         <input
@@ -141,14 +141,14 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
           type="file"
           onChange={handleFileChange}
           accept=".pdf,.doc,.docx"
-          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="input-soft"
           required
         />
         {cvFile && (
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">Selected: {cvFile.name}</p>
+          <p className="mt-2 text-sm text-gray-300">Selected: {cvFile.name}</p>
         )}
         {uploadError && (
-          <p className="mt-2 text-sm text-red-600 dark:text-red-400">Upload error: {uploadError}</p>
+          <p className="mt-2 text-sm text-red-400">Upload error: {uploadError}</p>
         )}
       </div>
 
@@ -157,7 +157,7 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
         <button
           type="submit"
           disabled={submitting || uploading}
-          className="flex-1 px-6 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {submitting ? "Submitting..." : uploading ? "Uploading CV..." : "Submit Application"}
         </button>
@@ -165,7 +165,7 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
           type="button"
           onClick={onCancel}
           disabled={submitting || uploading}
-          className="px-6 py-3 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="btn-ghost disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Cancel
         </button>

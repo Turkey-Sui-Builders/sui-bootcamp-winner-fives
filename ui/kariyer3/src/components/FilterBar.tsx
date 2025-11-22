@@ -8,23 +8,23 @@ export function FilterBar() {
   const filters = useSelector((state: RootState) => state.filters);
 
   return (
-    <div className="border-b border-gray-200 dark:border-gray-800 pb-6 space-y-4">
+    <div className="panel rounded-2xl p-6 space-y-5">
       {/* Search */}
       <input
         type="text"
         placeholder="Search jobs..."
         value={filters.searchQuery}
         onChange={(e) => dispatch(setSearchQuery(e.target.value))}
-        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="input-soft"
       />
 
       {/* Filters Row */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* Category */}
         <select
           value={filters.category || ""}
           onChange={(e) => dispatch(setCategory(e.target.value || null))}
-          className="px-4 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="input-soft"
         >
           <option value="">All Categories</option>
           {JOB_CATEGORIES.map((cat) => (
@@ -42,7 +42,7 @@ export function FilterBar() {
           onChange={(e) =>
             dispatch(setSalaryRange({ min: e.target.value ? parseInt(e.target.value) : null, max: filters.salaryMax }))
           }
-          className="px-4 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="input-soft"
         />
 
         {/* Max Salary */}
@@ -60,7 +60,7 @@ export function FilterBar() {
         <select
           value={filters.status ?? ""}
           onChange={(e) => dispatch(setStatus(e.target.value ? parseInt(e.target.value) : null))}
-          className="px-4 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="input-soft"
         >
           <option value="">All Status</option>
           <option value={JOB_STATUS.OPEN}>Open</option>
@@ -72,7 +72,7 @@ export function FilterBar() {
       {/* Reset */}
       <button
         onClick={() => dispatch(resetFilters())}
-        className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+        className="text-sm font-semibold text-teal-200 hover:text-white transition-smooth"
       >
         Reset Filters
       </button>

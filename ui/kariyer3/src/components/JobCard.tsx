@@ -15,40 +15,42 @@ export function JobCard({ job }: JobCardProps) {
     [JOB_STATUS.HIRED]: "Hired",
   }[job.status];
 
+  const statusColor = {
+    [JOB_STATUS.OPEN]: "text-teal-300 bg-teal-400/10 border-teal-400/40",
+    [JOB_STATUS.CLOSED]: "text-gray-300 bg-white/5 border-white/10",
+    [JOB_STATUS.HIRED]: "text-amber-300 bg-amber-400/10 border-amber-400/40",
+  }[job.status];
+
   return (
-    <Link to={`/job/${job.id}`} className="block group py-8 interactive">
-      {/* Borderless, Cardless - Pure Typography */}
-      <div className="space-y-3">
-        {/* Title - Large, Bold */}
-        <h3 className="text-3xl font-black tracking-tight text-gray-900">
-          {job.title}
-        </h3>
-
-        {/* Company - Medium Weight */}
-        <p className="text-xl font-semibold text-gray-600">{job.company}</p>
-
-        {/* Metadata - Light, Spaced */}
-        <div className="flex gap-3 text-sm text-gray-500">
-          <span>{job.location}</span>
-          <span>·</span>
-          <span>{job.category}</span>
-          <span>·</span>
-          <span className="font-medium">{minSalary.toLocaleString()} - {maxSalary.toLocaleString()} SUI</span>
+    <Link to={`/job/${job.id}`} className="block group">
+      <div className="surface rounded-2xl p-6 md:p-7 border border-white/10 hover:border-teal-400/50 transition-smooth hover:-translate-y-0.5">
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-2">
+            <h3 className="text-2xl md:text-3xl font-black tracking-tight text-white group-hover:text-teal-200 transition-smooth">
+              {job.title}
+            </h3>
+            <p className="text-lg font-semibold text-gray-300">{job.company}</p>
+          </div>
+          <span className={`pill border ${statusColor}`}>{statusLabel}</span>
         </div>
 
-        {/* Tags - No Background, Just Text */}
+        <div className="flex flex-wrap gap-3 text-sm text-gray-400 mt-4">
+          <span className="chip">{job.location}</span>
+          <span className="chip">{job.category}</span>
+          <span className="chip font-semibold text-gray-100">
+            {minSalary.toLocaleString()} - {maxSalary.toLocaleString()} SUI
+          </span>
+        </div>
+
         {job.tags.length > 0 && (
-          <div className="flex gap-3 text-sm text-gray-400">
+          <div className="flex flex-wrap gap-2 mt-4">
             {job.tags.map((tag) => (
-              <span key={tag}>{tag}</span>
+              <span key={tag} className="chip text-gray-200">
+                {tag}
+              </span>
             ))}
           </div>
         )}
-
-        {/* Status - Simple Text, No Badge */}
-        <p className={`text-xs font-medium ${job.status === JOB_STATUS.OPEN ? "text-green-600" : "text-gray-400"}`}>
-          {statusLabel}
-        </p>
       </div>
     </Link>
   );
