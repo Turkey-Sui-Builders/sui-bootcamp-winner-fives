@@ -182,8 +182,8 @@ export function MyJobsPage() {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
         <div className="surface rounded-3xl p-10 border border-white/10 text-center space-y-3">
-          <h2 className="text-2xl font-bold text-white">Connect your wallet</h2>
-          <p className="text-gray-400">View and manage the roles you have posted.</p>
+          <h2 className="text-2xl font-bold text-main">Connect your wallet</h2>
+          <p className="text-muted">View and manage the roles you have posted.</p>
         </div>
       </div>
     );
@@ -192,7 +192,7 @@ export function MyJobsPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
-        <p className="text-xl text-gray-300">Loading...</p>
+        <p className="text-xl text-muted">Loading...</p>
       </div>
     );
   }
@@ -201,13 +201,13 @@ export function MyJobsPage() {
     <div className="space-y-8">
       <div className="surface rounded-3xl p-8 border border-white/10">
         <p className="pill w-fit text-amber-200/90">Employer console</p>
-        <h1 className="text-4xl md:text-5xl font-black mb-2">My Job Postings</h1>
-        <p className="text-lg text-gray-300">Manage your job listings and review applications.</p>
+        <h1 className="text-4xl md:text-5xl font-black mb-2 text-main">My Job Postings</h1>
+        <p className="text-lg text-muted">Manage your job listings and review applications.</p>
       </div>
 
       {jobs.length === 0 ? (
         <div className="text-center py-12 surface rounded-3xl border border-white/10">
-          <p className="text-xl text-gray-300 mb-4">You haven't posted any jobs yet</p>
+          <p className="text-xl text-muted mb-4">You haven't posted any jobs yet</p>
           <a
             href="/post"
             className="btn-primary"
@@ -226,12 +226,12 @@ export function MyJobsPage() {
               <div key={job.id} className="surface rounded-2xl p-6 border border-white/10">
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-2">
-                    <h3 className="text-2xl font-bold text-white">{job.title}</h3>
-                    <p className="text-lg text-gray-300">{job.company}</p>
-                    <div className="flex flex-wrap gap-3 text-sm text-gray-300">
+                    <h3 className="text-2xl font-bold text-main">{job.title}</h3>
+                    <p className="text-lg text-muted">{job.company}</p>
+                    <div className="flex flex-wrap gap-3 text-sm text-muted">
                       <span className="chip">{job.location}</span>
                       <span className="chip">{job.category}</span>
-                      <span className="chip font-semibold text-gray-100">
+                      <span className="chip font-semibold text-main">
                         {minSalary.toLocaleString()} - {maxSalary.toLocaleString()} SUI
                       </span>
                     </div>
@@ -240,7 +240,7 @@ export function MyJobsPage() {
                         {job.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="chip text-gray-200"
+                            className="chip"
                           >
                             {tag}
                           </span>
@@ -254,7 +254,7 @@ export function MyJobsPage() {
                 <div className="flex gap-4 pt-4">
                   <button
                     onClick={() => (isExpanded ? setSelectedJob(null) : loadApplicationsForJob(job.id))}
-                    className="text-sm font-semibold text-teal-200 hover:text-white transition-smooth"
+                    className="text-sm font-semibold text-teal-600 dark:text-teal-200 hover:text-main transition-smooth"
                   >
                     {isExpanded ? "Hide Applications" : "View Applications"}
                   </button>
@@ -263,16 +263,16 @@ export function MyJobsPage() {
                 {isExpanded && (
                   <div className="mt-6 space-y-4 border-t border-white/10 pt-4">
                     {jobApplications.length === 0 ? (
-                      <p className="text-gray-400">No applications yet</p>
+                      <p className="text-muted">No applications yet</p>
                     ) : (
                       jobApplications.map((app) => (
                         <div key={app.id} className="panel rounded-xl p-4 border border-white/10">
                           <div className="flex items-start justify-between gap-3">
                             <div className="space-y-2">
-                              <p className="text-sm text-gray-400">
+                              <p className="text-sm text-muted">
                                 Applicant: <span className="font-mono text-xs">{app.applicant.slice(0, 20)}...</span>
                               </p>
-                              <p className="text-gray-200">{app.cover_message}</p>
+                              <p className="text-main">{app.cover_message}</p>
 
                               {app.ai_score !== null && (
                                 <div className="flex items-center gap-2">
@@ -288,7 +288,7 @@ export function MyJobsPage() {
                                     AI Score: {app.ai_score}/100
                                   </span>
                                   {app.ai_analysis && (
-                                    <span className="text-xs text-gray-400">{app.ai_analysis}</span>
+                                    <span className="text-xs text-muted">{app.ai_analysis}</span>
                                   )}
                                 </div>
                               )}
@@ -298,7 +298,7 @@ export function MyJobsPage() {
                                   href={getCVUrl(app.cv_blob_id)}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-sm text-teal-200 hover:text-white transition-smooth"
+                                  className="text-sm text-teal-600 dark:text-teal-200 hover:text-main transition-smooth"
                                 >
                                   View CV (Walrus)
                                 </a>

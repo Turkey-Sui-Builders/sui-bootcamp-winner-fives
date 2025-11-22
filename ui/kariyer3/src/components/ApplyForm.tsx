@@ -113,11 +113,11 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 p-6 surface rounded-2xl border border-white/10">
-      <h2 className="text-3xl font-bold text-gray-50">Apply for this Position</h2>
+      <h2 className="text-3xl font-bold text-main">Apply for this Position</h2>
 
       {/* Cover Message */}
       <div>
-        <label htmlFor="cover" className="block text-sm font-semibold text-gray-200 mb-2">
+        <label htmlFor="cover" className="block text-sm font-semibold text-main mb-2">
           Cover Message
         </label>
         <textarea
@@ -133,7 +133,7 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
 
       {/* CV Upload */}
       <div>
-        <label htmlFor="cv" className="block text-sm font-semibold text-gray-200 mb-2">
+        <label htmlFor="cv" className="block text-sm font-semibold text-main mb-2">
           Upload CV (Walrus Storage)
         </label>
         <input
@@ -145,10 +145,10 @@ export function ApplyForm({ jobId, onSuccess, onCancel }: ApplyFormProps) {
           required
         />
         {cvFile && (
-          <p className="mt-2 text-sm text-gray-300">Selected: {cvFile.name}</p>
+          <p className="mt-2 text-sm text-muted">Selected: {cvFile.name}</p>
         )}
         {uploadError && (
-          <p className="mt-2 text-sm text-red-400">Upload error: {uploadError}</p>
+          <p className="mt-2 text-sm text-red-500">Upload error: {uploadError}</p>
         )}
       </div>
 

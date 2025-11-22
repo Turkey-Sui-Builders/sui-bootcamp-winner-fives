@@ -4,22 +4,44 @@
 
 @layer base {
   :root {
+    --accent: #2dd4bf;
+    --accent-2: #f59e0b;
+  }
+
+  :root[data-theme='dark'] {
     --bg: #05080f;
+    --glass: rgba(5, 8, 15, 0.85);
     --card: rgba(255, 255, 255, 0.04);
     --panel: rgba(255, 255, 255, 0.06);
     --stroke: rgba(255, 255, 255, 0.12);
     --text: #e5e7eb;
     --muted: #9ca3af;
-    --accent: #2dd4bf;
-    --accent-2: #f59e0b;
+    --soft: #cbd5e1;
+    --input: rgba(255, 255, 255, 0.04);
+    --bg-gradient: radial-gradient(circle at 20% 20%, rgba(45, 212, 191, 0.12), transparent 26%),
+      radial-gradient(circle at 80% 0%, rgba(245, 158, 11, 0.12), transparent 24%),
+      linear-gradient(180deg, #05080f 0%, #070c1a 35%, #05080f 100%);
+  }
+
+  :root[data-theme='light'] {
+    --bg: #f8fafc;
+    --glass: rgba(248, 250, 252, 0.9);
+    --card: rgba(255, 255, 255, 0.92);
+    --panel: rgba(255, 255, 255, 0.96);
+    --stroke: rgba(15, 23, 42, 0.08);
+    --text: #0f172a;
+    --muted: #475569;
+    --soft: #1f2937;
+    --input: rgba(255, 255, 255, 0.85);
+    --bg-gradient: radial-gradient(circle at 15% 20%, rgba(14, 165, 233, 0.12), transparent 25%),
+      radial-gradient(circle at 80% 0%, rgba(245, 158, 11, 0.12), transparent 22%),
+      linear-gradient(180deg, #f8fafc 0%, #edf2f7 45%, #f8fafc 100%);
   }
 
   body {
-    @apply text-gray-50 font-sans;
-    background:
-      radial-gradient(circle at 20% 20%, rgba(45, 212, 191, 0.12), transparent 26%),
-      radial-gradient(circle at 80% 0%, rgba(245, 158, 11, 0.12), transparent 24%),
-      linear-gradient(180deg, #05080f 0%, #070c1a 35%, #05080f 100%);
+    @apply font-sans;
+    background: var(--bg-gradient);
+    color: var(--text);
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
@@ -48,9 +70,12 @@
     @apply transition-smooth hover:opacity-70 active:opacity-50;
   }
 
-  /* Address formatting */
-  .address {
-    @apply font-mono text-sm text-gray-500;
+  .text-main {
+    color: var(--text);
+  }
+
+  .text-muted {
+    color: var(--muted);
   }
 
   /* Surfaces */
@@ -68,14 +93,16 @@
 
   .pill {
     @apply px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: color-mix(in srgb, var(--text) 6%, transparent);
+    border: 1px solid var(--stroke);
+    color: var(--text);
   }
 
   .chip {
     @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: color-mix(in srgb, var(--text) 6%, transparent);
+    border: 1px solid var(--stroke);
+    color: var(--muted);
   }
 
   /* Buttons */
@@ -90,14 +117,55 @@
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold text-gray-200 transition-smooth;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    @apply inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold transition-smooth;
+    color: var(--text);
+    background: color-mix(in srgb, var(--text) 4%, transparent);
+    border: 1px solid var(--stroke);
   }
 
   .input-soft {
-    @apply w-full px-4 py-3 rounded-xl text-gray-50 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-400;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    color: var(--text);
+    background: var(--input);
+    background-color: var(--input);
+    border: 1px solid var(--stroke);
+    transition: all 150ms ease;
+    appearance: none;
+  }
+
+  .input-soft::placeholder {
+    color: var(--muted);
+  }
+
+  .input-soft:focus {
+    outline: none;
+    border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+
+  /* Align number inputs with other fields */
+  .input-soft[type="number"]::-webkit-inner-spin-button,
+  .input-soft[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .input-soft[type="number"] {
+    appearance: none;
+    -moz-appearance: textfield;
+    background-color: var(--input);
+  }
+
+  select.input-soft option {
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  .nav-glass {
+    background: var(--glass);
+    border-bottom: 1px solid var(--stroke);
+    backdrop-filter: blur(18px);
   }
 }

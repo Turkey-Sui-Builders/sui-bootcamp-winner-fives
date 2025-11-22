@@ -83,7 +83,7 @@ export function HomePage() {
           <h1 className="text-5xl md:text-6xl font-black leading-tight">
             Find roles that match your ambition.
           </h1>
-          <p className="text-lg text-gray-300 max-w-2xl">
+          <p className="text-lg text-muted max-w-2xl">
             Curated opportunities posted and verified on Sui. Search transparently, apply with confidence,
             and get hired without gatekeepers.
           </p>
@@ -100,8 +100,8 @@ export function HomePage() {
             { label: "Trustless hiring", value: "Wallet-native offers" },
           ].map((stat) => (
             <div key={stat.label} className="panel rounded-2xl p-4">
-              <p className="text-sm text-gray-400">{stat.label}</p>
-              <p className="text-xl font-semibold text-gray-50 mt-1">{stat.value}</p>
+              <p className="text-sm text-muted">{stat.label}</p>
+              <p className="text-xl font-semibold text-main mt-1">{stat.value}</p>
             </div>
           ))}
         </div>
@@ -114,7 +114,7 @@ export function HomePage() {
       <div>
         {loading ? (
           <div className="text-center py-12">
-            <p className="text-xl text-gray-300">Loading jobs...</p>
+            <p className="text-xl text-muted">Loading jobs...</p>
           </div>
         ) : (
           <JobList />
