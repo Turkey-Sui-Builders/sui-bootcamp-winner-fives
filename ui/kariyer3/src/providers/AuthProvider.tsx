@@ -1,5 +1,5 @@
 import { createContext, useContext, ReactNode } from "react";
-import { useCurrentAccount } from "@mysten/dapp-kit";
+import { useCurrentAccount, useDisconnectWallet } from "@mysten/dapp-kit";
 import { useZkLogin, useEnokiFlow } from "@mysten/enoki/react";
 
 interface AuthContextType {
@@ -23,6 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const { address: zkLoginAddress } = useZkLogin();
   const enokiFlow = useEnokiFlow();
   const currentAccount = useCurrentAccount();
+  const { mutate: disconnectWallet } = useDisconnectWallet();
 
   const isUsingZkLogin = !!zkLoginAddress;
   const address = zkLoginAddress || currentAccount?.address || null;
@@ -31,8 +32,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     if (isUsingZkLogin) {
       enokiFlow.logout();
+      window.location.href = "/"; // Redirect to home after zkLogin logout
+    } else if (currentAccount) {
+      disconnectWallet();
     }
-    // For wallet, user disconnects manually via wallet UI
   };
 
   return (
