@@ -40,10 +40,10 @@ VITE_GOOGLE_CLIENT_ID=your_google_client_id
 ```bash
 cd ../../move/kariyer3
 
-# Devnet'e geçin
-sui client switch --env devnet
+# Testnet'e geçin
+sui client switch --env testnet
 
-# Devnet faucet'ten SUI alın
+# Testnet faucet'ten SUI alın
 sui client faucet
 
 # Contract'ı deploy edin
@@ -75,7 +75,7 @@ Uygulama `http://localhost:5173` adresinde çalışacaktır.
 ### Enoki (zkLogin) API Key
 1. [enoki.mystenlabs.com](https://enoki.mystenlabs.com/) adresine gidin
 2. GitHub ile giriş yapın
-3. "Create New App" → App adı verin → Network: **Devnet**
+3. "Create New App" → App adı verin → Network: **Testnet**
 4. API Key'i kopyalayın
 
 ### Google OAuth Client ID
@@ -88,12 +88,12 @@ Uygulama `http://localhost:5173` adresinde çalışacaktır.
    - `https://yourdomain.com/auth`
 6. Client ID'yi kopyalayın
 
-### Walrus (Devnet)
-Walrus devnet public ve ücretsizdir, API key gerektirmez. Endpoints otomatik yapılandırılmıştır:
-- Publisher: `https://publisher-devnet.walrus.space`
-- Aggregator: `https://aggregator-devnet.walrus.space`
+### Walrus (Testnet)
+Walrus testnet public ve ücretsizdir, API key gerektirmez. Endpoints otomatik yapılandırılmıştır:
+- Publisher: `https://publisher.walrus-testnet.walrus.space`
+- Aggregator: `https://aggregator.walrus-testnet.walrus.space`
 
-## 📦 Devnet Test SUI Alma
+## 📦 Testnet Test SUI Alma
 
 ```bash
 # Sui CLI ile
@@ -101,7 +101,7 @@ sui client faucet
 
 # Discord faucet
 # 1. discord.gg/sui adresine katılın
-# 2. #devnet-faucet kanalına gidin
+# 2. #testnet-faucet kanalına gidin
 # 3. !faucet <WALLET_ADDRESS> yazın
 ```
 
@@ -142,7 +142,7 @@ hackathon/
 │   │   └── job_board.move     # Ana contract (SEAL Pattern)
 │   ├── tests/
 │   │   └── job_board_tests.move
-│   └── Move.toml              # Devnet configuration
+│   └── Move.toml              # Testnet configuration
 │
 └── ui/kariyer3/               # React frontend
     ├── src/
@@ -151,22 +151,22 @@ hackathon/
     │   ├── store/            # Redux store
     │   ├── hooks/            # Custom hooks (Walrus upload)
     │   ├── providers/        # Auth provider (zkLogin + wallet)
-    │   ├── config/           # Devnet configuration
+    │   ├── config/           # Testnet configuration
     │   └── test/             # Test dosyaları
-    ├── .env.example          # Devnet environment template
+    ├── .env.example          # Testnet environment template
     └── package.json
 ```
 
-## 🌐 Network Endpoints (Devnet)
+## 🌐 Network Endpoints (Testnet)
 
-### Sui Devnet
-- RPC: `https://fullnode.devnet.sui.io:443`
-- Faucet: `https://faucet.devnet.sui.io/gas`
-- Explorer: `https://suiexplorer.com/?network=devnet`
+### Sui Testnet
+- RPC: `https://fullnode.testnet.sui.io:443`
+- Faucet: `https://faucet.testnet.sui.io/gas`
+- Explorer: `https://suiexplorer.com/?network=testnet`
 
-### Walrus Devnet
-- Publisher: `https://publisher-devnet.walrus.space`
-- Aggregator: `https://aggregator-devnet.walrus.space`
+### Walrus Testnet
+- Publisher: `https://publisher.walrus-testnet.walrus.space`
+- Aggregator: `https://aggregator.walrus-testnet.walrus.space`
 
 ## 🔒 Güvenlik
 
@@ -192,9 +192,9 @@ hackathon/
 4. CV'nizi yükleyin (Walrus'a otomatik upload)
 5. Başvuru durumunuzu "My Applications" sayfasından takip edin
 
-## ⚙️ Devnet Yapılandırması
+## ⚙️ Testnet Yapılandırması
 
-Proje **devnet** için önceden yapılandırılmıştır:
+Proje **testnet** için önceden yapılandırılmıştır:
 
 ### Move Contract (`Move.toml`)
 ```toml
@@ -204,7 +204,7 @@ edition = "2024.beta"
 published-at = "0x0"
 
 [dependencies]
-Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/devnet" }
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
 
 [addresses]
 kariyer3 = "0x0"
@@ -212,14 +212,14 @@ kariyer3 = "0x0"
 
 ### Frontend (`constants.ts`)
 ```typescript
-export const NETWORK = "devnet";
-export const WALRUS_AGGREGATOR = "https://aggregator-devnet.walrus.space";
-export const WALRUS_PUBLISHER = "https://publisher-devnet.walrus.space";
+export const NETWORK = "testnet";
+export const WALRUS_AGGREGATOR = "https://aggregator.walrus-testnet.walrus.space";
+export const WALRUS_PUBLISHER = "https://publisher.walrus-testnet.walrus.space";
 ```
 
 ### Environment Variables (`.env`)
 ```env
-VITE_NETWORK=devnet
+VITE_NETWORK=testnet
 VITE_PACKAGE_ID=0x...          # Deploy sonrası
 VITE_JOB_BOARD_ID=0x...        # Deploy sonrası
 VITE_CLOCK_ID=0x6
@@ -239,9 +239,9 @@ sui client faucet
 ### Walrus Upload Hatası
 ```bash
 # Error: Failed to upload to Walrus
-# Çözüm: Devnet endpoints'lerin doğru olduğunu kontrol edin
+# Çözüm: Testnet endpoints'lerin doğru olduğunu kontrol edin
 # constants.ts dosyasında:
-# WALRUS_PUBLISHER = "https://publisher-devnet.walrus.space"
+# WALRUS_PUBLISHER = "https://publisher.walrus-testnet.walrus.space"
 ```
 
 ### zkLogin Hatası
@@ -255,8 +255,8 @@ sui client faucet
 ```bash
 # Error: Network mismatch
 # Çözüm: Sui CLI ve frontend network'ünün aynı olduğundan emin olun
-sui client switch --env devnet
-# .env dosyasında: VITE_NETWORK=devnet
+sui client switch --env testnet
+# .env dosyasında: VITE_NETWORK=testnet
 ```
 
 ## 📞 Destek
